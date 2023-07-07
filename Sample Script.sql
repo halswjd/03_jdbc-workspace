@@ -31,5 +31,14 @@ VALUES(SEQ_USERNO.NEXTVAL, 'user01', 'pass01', '홍길동', null, 23, 'user01@iei.o
 
 COMMIT; -- 커밋안하면 반영안되니 데이터 다 넣고 커밋하기!!
 
+CREATE TABLE TEST(
+    TESTNO NUMBER,
+    TESTNAME VARCHAR2(20),
+    TESTDATE DATE
+);
+
+SELECT * FROM TEST;
+
+
 
 
