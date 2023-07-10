@@ -313,6 +313,11 @@ public class MemberDao {
 			
 			result = stmt.executeUpdate("DELETE FROM MEMBER WHERE USERID = '" + deleteId + "'");
 			
+			if(result > 0) {
+				conn.commit();
+			}else {
+				conn.rollback();
+			}
 		
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();

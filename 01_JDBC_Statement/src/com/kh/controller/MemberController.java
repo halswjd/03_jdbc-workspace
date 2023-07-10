@@ -58,10 +58,7 @@ public class MemberController {
 		}
 	} //
 	
-	/**
-	 * 
-	 * @param userId
-	 */
+	
 	public void selectByUserId(String userId) {
 		Member m = new MemberDao().selectByUserId(userId);
 		
