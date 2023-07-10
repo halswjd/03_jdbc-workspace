@@ -1,7 +1,9 @@
 package test;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
@@ -32,6 +34,7 @@ public class TestRun {
 		 *  
 		 */
 		
+		/*
 		
 		// 1. 각자 pc(localhost)에 JDBC계정에 연결 한 후 TEST테이블에 INSERT 해보기
 		// INSERT문 => 처리된 행 수 (int) => 트랜젝션 처리
@@ -69,7 +72,7 @@ public class TestRun {
 			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "JDBC", "JDBC");
 			
 			// 3) Statement 객체 생성
-			stmt = conn.createStatement();
+			stmt = conn.createStatement(); // conn을 이용해 stmt를 생성하기때문에 "생성된 역순"으로 닫아야함
 			
 			// 4, 5) sql문 전달하면서 실행 후 결과받기 (처리된 행수)
 			result = stmt.executeUpdate(sql);
@@ -105,10 +108,81 @@ public class TestRun {
 			}
 		}
 		
+		*/
 		
+		// 2. 내 pc에 DB상에 JDBC계정에 TEST테이블에 있는 모든 데이터 조회해보기
+		// SELECT문 => 결과 ResultSet(조회된 데이터들 담겨있음) 받기 => ResultSet으로 부터 데이터 뽑기
 		
+		// 필요햔 변수들 셋팅
+		// 왜 변수를 먼저 셋팅하나요? -> finally 구문에서 close하기 위해서 전역변수로 셋팅!
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rset = null; // select문 실행하여 조회된 결과값들이 처음에 실직적으로 담길 객체
 		
+		// 실행할 sql문 (쿼리문 작성시 세미콜론; 하지않기!!! 내부적으로 알아서 SQL문 뒤에 세미콜론 찍어줌)
+//		String sql = "SELECT * FROM TEST";
+//		String sql = "SELECT * FROM TEST WHERE TESTNO = 1";
+		String sql = "SELECT * FROM TEST WHERE TESTNAME LIKE '하%' ";
+		
+		try {
+			// 1) jdbc driver 등록
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			
+			// 2) Connection 객체 생성
+			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "JDBC", "JDBC");
+			
+			// 3) Statement 객체 생성
+			stmt = conn.createStatement();
+			
+			// 4,5) sql문 전달해서 실행 후 결과받기 (ReseultSet 객체)
+			rset = stmt.executeQuery(sql);
+			
+			// rset.next() => 커서를 움직이는 메소드, 반환형 boolean : 다음꺼가 있으면 true, 없으면 false
+			
+			// 6)
+			while(rset.next()) {
+				// 현재 참조하는 rset으로 부터 어떤 컬럼에 해당하는 값을 어떤 타입으로 뽑을건지 제시해야됨!
+				// DB의 컬럼명 제시!! (대소문자 가리지 않음!)
+				int tno = rset.getInt("TESTNO");
+				String tname = rset.getString("TESTNAME");
+				Date tdate = rset.getDate("TESTDATE"); // 클래스 import시 무조건 sql에 있는걸로!!
+				
+				System.out.println(tno + ", " + tname + ", " + tdate);
+			}
+				
+		
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				// 7) 다 쓴 자원 반납
+				rset.close();
+				stmt.close();
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
+		}
 		
 	}
-
+	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
