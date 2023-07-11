@@ -121,7 +121,7 @@ public class MemberMenu {
 	 * @return 사용자가 입력한 회원명(키워드)
 	 */
 	public String inputMemberName() {
-		System.out.print("\n 회원 이름(키워드) 입력 : ");
+		System.out.print("회원 이름(키워드) 입력 : ");
 		return sc.nextLine();
 	}
 	

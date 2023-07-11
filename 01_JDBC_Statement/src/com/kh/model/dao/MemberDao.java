@@ -241,7 +241,13 @@ public class MemberDao {
 		return m;
 	}//
 	
-	public ArrayList<Member> selectByUserName(String userName) {
+	/** 사용자의 이름으로 키워드 검색 요청시 처리해주는 메소드
+	 * @param keyWord
+	 * @return
+	 */
+	public ArrayList<Member> selectByUserName(String keyWord) {
+		// select문 수행 (여러행) => ResultSet
+		// ArrayList로 파야함
 		
 		Connection conn = null;
 		Statement stmt = null;
@@ -259,9 +265,9 @@ public class MemberDao {
 			stmt = conn.createStatement();
 			
 			// 4,5) sql문 전달해서 실행 후 결과 받기
-			rset = stmt.executeQuery("SELECT * FROM MEMBER WHERE USERNAME LIKE '%" + userName + "%'");
+			rset = stmt.executeQuery("SELECT * FROM MEMBER WHERE USERNAME LIKE '%" + keyWord + "%'");
 			
-			
+			/*
 			while(rset.next()) {
 				Member m = new Member(rset.getInt("USERNO"), 
 								rset.getString("USERID"), 
@@ -277,6 +283,21 @@ public class MemberDao {
 				
 				list.add(m);
 				
+			}
+			*/
+			
+			while(rset.next()) {
+				list.add(new Member(rset.getInt("USERNO"), 
+									rset.getString("USERID"), 
+									rset.getString("USERPWD"), 
+									rset.getString("USERNAME"), 
+									rset.getString("GENDER"), 
+									rset.getInt("AGE"), 
+									rset.getString("EMAIL"), 
+									rset.getString("PHONE"), 
+									rset.getString("ADDRESS"), 
+									rset.getString("HOBBY"), 
+									rset.getDate("ENROLLDATE")));
 			}
 			
 		} catch (ClassNotFoundException e) {
@@ -296,6 +317,11 @@ public class MemberDao {
 		return list;
 	}
 	
+	/**
+	 * 사용자가 입력한 아이디의 회원 정보를 삭제하는 메소드
+	 * @param deleteId : 사용자가 입력한 삭제를 원하는 아이디
+	 * @return result : DML문에서 처리된 행 수
+	 */
 	public int deleteMember(String deleteId) {
 		
 		Member m = null;
@@ -337,5 +363,54 @@ public class MemberDao {
 		
 	}
 	
-	
+	/**
+	 * 사용자가 입력한 아이디의 정보 변경 요청 처리해주는 메소드
+	 * @param m
+	 * @return result : 처리된 행수
+	 */
+	public int updateMember(Member m) {
+		// update문 구문 => DML문 => 처리된 행수(int) => 트랜젝션 처리
+		
+		int result = 0;
+		Connection conn = null;
+		Statement stmt = null;
+		
+		String sql = "UPDATE MEMBER "
+				   + "SET USERPWD = '" + m.getUserPwd() + "'"
+				   + ", EMAIL = '" + m.getEmail() + "'"
+				   + ", PHONE = '" + m.getPhone() + "'"
+				   + ", ADDRESS = '" + m.getAddress() + "' "
+				   + "WHERE USERID = '" + m.getUserId() + "'";
+		
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			
+			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "JDBC", "JDBC");
+			
+			conn.setAutoCommit(false); // 참고, 자동으로 커밋되지않게
+			
+			stmt = conn.createStatement();
+			
+			result = stmt.executeUpdate(sql);
+			
+			if(result > 0 ) {
+				conn.commit();
+			} else {
+				conn.rollback();
+			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				stmt.close();
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return result;
+	}
 }
