@@ -99,5 +99,5 @@
 	  FROM MEMBER 
 	 WHERE USERID = ?
 	</entry>
-	
+
 </properties>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<entry key = "selectList">
+		SELECT
+				PRODUCT_ID
+			  , P_NAME
+			  , PRICE
+			  , DESCRIPTION
+			  , STOCK
+		 FROM PRODUCT	 
+	</entry>
+		
+	<entry key = "inputProduct">
+		INSERT 
+		  INTO PRODUCT 
+		VALUES(?, ?, ?, ?, ?)
+	</entry>
+	
+	<entry key = "updateProduct">
+		UPDATE PRODUCT
+		   SET P_NAME = ?
+		     , PRICE = ?
+		     , DESCRIPTION = ?
+		     , STOCK = ?
+		 WHERE PRODUCT_ID = ?
+	</entry>
+	
+	<entry key = "deleteProduct">
+		DELETE PRODUCT
+		 WHERE PRODUCT_ID = ?
+	</entry>
+
+	<entry key = "searchProduct">
+	 SELECT
+			PRODUCT_ID
+		  , P_NAME
+		  , PRICE
+		  , DESCRIPTION
+		  , STOCK
+	FROM PRODUCT
+	WHERE PRODUCT_ID = ?
+	</entry>
+</properties>
