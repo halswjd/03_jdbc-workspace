@@ -58,12 +58,12 @@ public class ProductController {
 	
 	public void searchProduct(String productId) {
 		
-		Product p = new ProductService().searchProduct(productId);
+		ArrayList<Product> list = new ProductService().searchProduct(productId);
 		
-		if(p == null) {
+		if(list.isEmpty()) {
 			new ProductMenu().displayFail(productId + "에 해당하는 상품을 찾지 못했습니다.");
 		} else {
-			new ProductMenu().displayProduct(p);
+			new ProductMenu().displayProductList(list);
 		}
 		
 	}

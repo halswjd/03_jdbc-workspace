@@ -39,6 +39,6 @@
 		  , DESCRIPTION
 		  , STOCK
 	FROM PRODUCT
-	WHERE PRODUCT_ID = ?
+	WHERE PRODUCT_ID LIKE ?
 	</entry>
 </properties>

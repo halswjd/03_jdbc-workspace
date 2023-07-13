@@ -75,15 +75,15 @@ public class ProductService {
 		return result;
 	}
 	
-	public Product searchProduct(String productId) {
+	public ArrayList<Product> searchProduct(String productId) {
 		
 		Connection conn = getConnection();
 		
-		Product p = new ProductDao().searchProduct(conn, productId);
+		ArrayList<Product> list = new ProductDao().searchProduct(conn, productId);
 		
 		close(conn);
 		
-		return p;
+		return list;
 	}
 }
 

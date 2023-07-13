@@ -131,9 +131,9 @@ public class ProductDao {
 		
 	}
 	
-	public Product searchProduct(Connection conn, String productId) {
+	public ArrayList<Product> searchProduct(Connection conn, String productId) {
 		
-		Product p = new Product();
+		ArrayList<Product> list = new ArrayList<Product>();
 		
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
@@ -142,16 +142,16 @@ public class ProductDao {
 		try {
 			pstmt = conn.prepareStatement(sql);
 			
-			pstmt.setString(1, productId);
+			pstmt.setString(1, "%"+productId+"%");
 			
 			rset = pstmt.executeQuery();
 			
-			if(rset.next()) {
-				p = new Product(rset.getString("product_id"),
-								rset.getString("p_name"), 
-								rset.getInt("price"), 
-								rset.getString("description"), 
-								rset.getInt("stock"));
+			while(rset.next()) {
+				list.add(new Product(rset.getString("product_id"), 
+						 rset.getString("p_name"), 
+						 rset.getInt("price"), 
+						 rset.getString("description"), 
+						 rset.getInt("stock")));	
 			}
 			
 		} catch (SQLException e) {
@@ -161,7 +161,7 @@ public class ProductDao {
 			close(pstmt);
 		}
 		
-		return p;
+		return list;
 	}
 
 }
