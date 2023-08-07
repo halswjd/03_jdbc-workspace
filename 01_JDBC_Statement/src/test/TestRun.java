@@ -25,7 +25,7 @@ public class TestRun {
 		 *  4) sql문 전달하면서 실행 : Statement 객체를 이용해서 sql문 실행
 		 *  5) 결과받기
 		 *  	> SELECT문 실행 => ResultSet 객체 (조회된 데이터들이 담겨 있음) => 6_1
-		 *  	> 	 DML문 실행 => int (처리된 행 수) => 6_1
+		 *  	> 	 DML문 실행 => int (처리된 행 수) => 6_2
 		 *  
 		 *  6_1) ResultSet에 담겨있는 데이터들을 하나씩 하나씩 뽑아서 vo객체에 주섬주섬 옮겨 담기 [+ 여러행 조회시에는 ArrayList에 차곡차곡 담기]
 		 *  6_2) 트랜젝션 처리 (성공적으로 수행했으면 commit, 실패했으면 rollback)

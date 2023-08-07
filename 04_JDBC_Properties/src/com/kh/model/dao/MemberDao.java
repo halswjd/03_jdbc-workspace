@@ -48,7 +48,6 @@ public class MemberDao {
 		// insert문 => 처리된 행수 반환 => 트랜젝션 처리
 		
 		int result = 0;
-		// conn 이미 MemberServiceㅇ
 		PreparedStatement pstmt = null;
 		
 		String sql = prop.getProperty("insertMember");
